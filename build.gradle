@@ -1,0 +1,32 @@
+plugins {
+    id 'java' //leea todas los parametros o cofiguraciones de java
+}
+
+repositories {
+    maven{
+        url 'https://repo.maven.apache.org/maven2' //repositorio maven para la ejecucion
+    }
+}
+
+dependencies{
+    testImplementation 'com.intuit.karate:karate-junit5:1.2.0.RC5' //ejecucion de karate
+    testImplementation 'net.masterthought:cucumber-reporting:5.7.0'  //generar reporte con cucumber
+}
+
+test {
+    useJUnitPlatform()  //
+    systemProperty "karate.env", System.properties.getProperty("karate.env") //este es para el entorno de las pruebas (Desarrollor, pruebas, produccion)
+    systemProperty "baseUrl", System.properties.getProperty("baseUrl") //este es para la url basadas en Karate
+    systemProperty "user", System.properties.getProperty("user") //cotiene la informacion del usuario que las pruebas necesita
+
+    outputs.upToDateWhen { false } //está deshabilitando la verificación de la actualización para este bloque de código. Esto es útil cuando deseas forzar la ejecución de este bloque de configuración, independientemente de si Gradle considera que los resultados son actuales o no.
+}
+
+sourceSets{
+    test{ //ruta donde esta alojado el proyecto
+        resources{
+            srcDir file('src/test/java')
+            exclude '**/*.java'
+        }
+    }
+}
